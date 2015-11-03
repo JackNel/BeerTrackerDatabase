@@ -39,6 +39,15 @@ public class Main {
         return(beers);
     }
 
+    static void editBeer (Connection conn, int id, String name, String type) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("UPDATE beers SET id = ?, name = ?, type = ?");
+        stmt.setInt(1, id);
+        stmt.setString(2, name);
+        stmt.setString(3, type);
+        stmt.execute();
+
+    }
+
     public static void main(String[] args) throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:h2:./main");
         Statement stmt = conn.createStatement();
@@ -72,6 +81,7 @@ public class Main {
                     return "";
                 })
         );
+
         Spark.post(
                 "/create-beer",
                 ((request, response) -> {
@@ -85,11 +95,31 @@ public class Main {
                     return "";
                 })
         );
+
         Spark.post(
                 "/delete-beer",
                 ((request, response) -> {
                     String id = request.queryParams("beerid");
                     deleteBeer(conn, Integer.valueOf(id));
+                    response.redirect("/");
+                    return "";
+                })
+        );
+
+        Spark.post(
+                "/edit-beer",
+                ((request, response) -> {
+                    String id = request.queryParams("editBeerId");
+                    int idNum = Integer.valueOf(id);
+                    String editName = request.queryParams("editBeerName");
+                    String editType = request.queryParams("editBeerType");
+                    ArrayList<Beer> beers = selectBeers(conn);
+                    for (Beer beer : beers) {
+                        if (beer.id == idNum) {
+
+                            editBeer(conn, beer.id, editName, editType);
+                        }
+                    }
                     response.redirect("/");
                     return "";
                 })
