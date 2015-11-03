@@ -24,15 +24,12 @@ public class Main {
         stmt.setInt(1, id);
         stmt.execute();
 
-      /*  int updateId = 0;
         for (int i=0; i < selectBeers(conn).size(); i++) {
             int updateId = i;
-            selectBeers(conn).get(i);
-
         }
         PreparedStatement stmt2 = conn.prepareStatement("UPDATE beers SET id = ?");
         stmt2.setInt(1, updateId);
-        stmt2.execute();*/
+        stmt2.execute();
     }
 
     static ArrayList<Beer> selectBeers (Connection conn) throws SQLException {
