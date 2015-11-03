@@ -115,7 +115,6 @@ public class Main {
                         editBeer(conn, idNum, editName, editType);
                     }
                     catch (Exception e ) {
-
                     }
                     response.redirect("/");
                     return "";
